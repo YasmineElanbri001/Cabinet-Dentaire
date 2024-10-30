@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+            layout:decorate="base"
+      lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Edition de dossier</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h3 class="p-2 fw-bold">Modification de dossier médical</h3>
+
+    <form method="POST" action="/dossiers/edit" class="p-2 border-1" th:object="${dossierMedicale}">
+        <div class="d-flex">
+            <input type="hidden" th:field="*{id}" />
+            <div class="d-flex flex-column w-100 me-2">
+                <input type="text" th:field="*{numeroDossier}" th:value="*{numeroDossier}" placeholder="Numéro de dossier" class="form-control" readonly/>
+                <span th:if="${#fields.hasErrors('numeroDossier')}" th:errors="*{numeroDossier}" class="erreur"></span>
+            </div>
+            <div class="d-flex flex-column w-100 ms-2">
+                <input type="text" th:field="*{dateCreation}" th:value="*{dateCreation}" placeholder="Date de création" class="form-control" readonly/>
+                <span th:if="${#fields.hasErrors('dateCreation')}" class="erreur">Veuillez séléctionner la date.</span>
+            </div>
+        </div>
+
+        <div class="d-flex my-3">
+            <div class="d-flex flex-column w-100">
+                <select name="patient" class="form-select">
+                    <option th:value="${patient.getId()}"
+                            th:text="${patient.getCin()}"></option>
+                </select>
+            </div>
+            <div class="d-flex flex-column w-100 mx-2">
+                <select name="medcinTraitant" class="form-select">
+                    <option th:value="${dentiste.getId()}"
+                            th:text="${dentiste.getNom()}"></option>
+                </select>
+            </div>
+            <div class="d-flex flex-column w-100">
+                <select name="statutPaiement" class="form-select">
+                    <option disabled selected>-- Etat de paiement --</option>
+                    <option th:each="status : ${T(ma.emsi.dentaire.enumeration.StatutPaiement).values()}"
+                            th:value="${status}"
+                            th:selected="${status == dossierMedicale.getStatutPaiement()}"
+                            th:text="${status}"></option>
+                </select>
+                <span th:if="${#fields.hasErrors('statutPaiement')}" class="erreur">Veuillez séléctionner l'état du paiement.</span>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+            <input type="submit" value="Créer le dossier médical" class="form-control btn btn-warning fw-bold" />
+            <a th:href="@{/dossiers/liste}" class="form-control btn btn-outline-warning text-black fw-bold ms-4">List des dossier médicaux</a>
+        </div>
+
+        <div class="p-4 d-flex justify-content-between msg-succes mt-4" th:if="${created == 'ok'}">
+            <span class="text-white">Dossier médical modifié avec succès</span>
+            <a href="#" onclick="this.parentNode.remove()" class="fw-bolder text-black text-decoration-none">&#x2715;</a>
+        </div>
+    </form>
+
+</div>
+</body>
+</html>

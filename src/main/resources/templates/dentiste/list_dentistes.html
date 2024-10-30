@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+            layout:decorate="base"
+      lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des dentistes</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="d-flex justify-content-between align-items-center p-2 border-bottom">
+        <h3 class="fw-bold" th:text="'Liste des dentistes  : ' + ${dentistes.size()}"></h3>
+        <a th:href="@{/dentistes/ajouter}" class="btn btn-bg text-black ">Ajouter un dentiste <span class="bi bi-calendar text-primary"></span></a>
+    </div>
+    <table class="table table-bordered mt-2 align-middle table-hover " th:if="${dentistes.size()>0}">
+        <thead>
+            <tr class="text-center">
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>CIN</th>
+                <th>Téléphone</th>
+                <th>Assurance</th>
+                <th>Salaire de base</th>
+                <th>Spécialité</th>
+                <th>Etat actuel</th>
+                <th colspan="3">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="dentiste : ${dentistes}" th:id="tr+${dentiste.getId()}">
+                <td th:text="${dentiste.getNom()}"></td>
+                <td th:text="${dentiste.getPrenom()}"></td>
+                <td th:text="${dentiste.getCin()}"></td>
+                <td th:text="${dentiste.getTelephone()}"></td>
+                <td th:text="${dentiste.getAssurance()}"></td>
+                <td th:text="${dentiste.getSalaireDeBase()}"></td>
+                <td th:text="${dentiste.getSpecialite()}">Prime</td>
+                <td th:text="${dentiste.getStatusActuel()}"></td>
+                <td><a th:href="@{/dentistes/dossiers(id=${dentiste.getId()})}" class="btn btn-primary btn-sm me-2">&nbsp;Dossiers</a></td>
+                <td class="text-center">
+                    <a th:href="@{/dentistes/edit(id=${dentiste.getId()})}" class="btn btn-warning btn-sm me-2">&nbsp;Modifier</a>
+                </td>
+                <td class="text-center">
+                    <button th:data-id="${dentiste.getId()}" th:onclick="showDelete('btn' + this.getAttribute('data-id'),'ctn' + this.getAttribute('data-id'),'tr' + this.getAttribute('data-id'))"  th:id="btn+${dentiste.getId()}" class="btn btn-sm btn-danger">Supprimer</button>
+                    <div th:id="ctn+${dentiste.getId()}" class="d-none">
+                        <a th:href="@{/dentistes/supprimer(id=${dentiste.getId()})}" class="btn btn-sm btn-outline-danger me-1">Sûr</a>
+                        <button th:data-id="${dentiste.getId()}" th:onclick="hideDelete('btn' + this.getAttribute('data-id'),'ctn' + this.getAttribute('data-id'),'tr' + this.getAttribute('data-id'))" class="btn btn-sm btn-dark">&times;</button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div th:if="${dentistes.size() == 0}" class="text-center mt-4">
+        <span>Veuillez cliquer sur le button</span>
+        <span class="fw-bold">Ajouter un dentiste</span>
+        <span>afin d'ajouter des dentistes</span>
+    </div>
+</div>
+</body>
+</html>

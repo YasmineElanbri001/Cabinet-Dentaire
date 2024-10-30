@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+            layout:decorate="base"
+      lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des consultations</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="d-flex justify-content-between align-items-center p-2 border-bottom">
+        <h3 class="fw-bold" th:text="'Liste des consulations  : ' + ${consultations.size()}"></h3>
+        <a th:href="@{/consultations/ajouter}" class="btn btn-bg text-black ">Ajouter une consultaion <span class="bi bi-calendar text-primary"></span></a>
+    </div>
+    <table class="table table-bordered mt-2 align-middle table-hover " th:if="${consultations.size()>0}">
+        <thead>
+            <tr class="text-center">
+                <th>Date de consultation</th>
+                <th>Type de consultation</th>
+                <th>Patient</th>
+                <th>Numéro dossier médical</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="consultation : ${consultations}" th:id="tr+${consultation.getIdConsultation()}">
+                <td th:text="${consultation.getDateConsultation()}"></td>
+                <td th:text="${consultation.getTypeConsultation()}"></td>
+                <td th:text="${consultation.getDossierMedical().getPatient().getCin()}"></td>
+                <td th:text="${consultation.getDossierMedical().getNumeroDossier()}"></td>
+                <td class="text-center">
+                    <a th:href="@{/consultations/edit(id=${consultation.getIdConsultation()})}" class="btn btn-warning btn-sm me-2">&nbsp;Modifier</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div th:if="${consultations.size() == 0}" class="text-center mt-4">
+        <span>Veuillez cliquer sur le button</span>
+        <span class="fw-bold">Ajouter une consultation</span>
+        <span>afin d'ajouter des consultations</span>
+    </div>
+</div>
+</body>
+</html>

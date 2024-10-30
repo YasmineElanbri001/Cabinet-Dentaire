@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+            layout:decorate="base"
+      lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des interventions</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="d-flex justify-content-between align-items-center p-2 border-bottom">
+        <h3 class="fw-bold" th:text="'Liste des interventions  médicales : ' + ${interventions.size()}"></h3>
+        <a th:href="@{/interventions/ajouter}" class="btn btn-bg text-black ">Ajouter un acte <span class="bi bi-calendar text-primary"></span></a>
+    </div>
+    <table class="table table-bordered mt-2 align-middle table-hover " th:if="${interventions.size()>0}">
+        <thead>
+            <tr class="text-center">
+                <th>Acte</th>
+                <th>Consultation</th>
+                <th>Dent</th>
+                <th>Prix</th>
+                <th colspan="2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="intervention : ${interventions}" th:id="tr+${intervention.getIdIntervention()}">
+                <td th:text="${intervention.getActe().getLibelle()}"></td>
+                <td th:text="${intervention.getConsultation().getDossierMedical().getPatient().getCin() + ' -- ' + intervention.getConsultation().getDateConsultation()}"></td>
+                <td th:text="${intervention.getDent()}"></td>
+                <td th:text="${intervention.getPrixPatient() + ' DH'}"></td>
+                <td class="text-center">
+                    <a th:href="@{/interventions/edit(id=${intervention.getIdIntervention()})}" class="btn btn-warning btn-sm me-2">&nbsp;Modifier</a>
+                </td>
+                <td class="text-center">
+                    <button th:data-id="${intervention.getIdIntervention()}" th:onclick="showDelete('btn' + this.getAttribute('data-id'),'ctn' + this.getAttribute('data-id'),'tr' + this.getAttribute('data-id'))"  th:id="btn+${intervention.getIdIntervention()}" class="btn btn-sm btn-danger">Supprimer</button>
+                    <div th:id="ctn+${intervention.getIdIntervention()}" class="d-none">
+                        <a th:href="@{/interventions/supprimer(id=${intervention.getIdIntervention()})}" class="btn btn-sm btn-outline-danger me-1">Sûr</a>
+                        <button th:data-id="${intervention.getIdIntervention()}" th:onclick="hideDelete('btn' + this.getAttribute('data-id'),'ctn' + this.getAttribute('data-id'),'tr' + this.getAttribute('data-id'))" class="btn btn-sm btn-dark">&times;</button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div th:if="${interventions.size() == 0}" class="text-center mt-4">
+        <span>Veuillez cliquer sur le button</span>
+        <span class="fw-bold">Ajouter une intervention</span>
+        <span>afin d'ajouter des interventions médicales</span>
+    </div>
+</div>
+</body>
+</html>

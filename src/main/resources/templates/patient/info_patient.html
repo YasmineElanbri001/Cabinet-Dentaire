@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="base"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Informations du patient</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h3 class="p-2 fw-bold" th:text="'Informations sur patient : '+ ${info.getCin()}"></h3>
+    <div class="p-2 border-top">
+        <table class="table align-middle">
+            <tr>
+                <td><h6>- Nom & prénom : </h6></td>
+                <td><h6 th:text="${info.getNom()} + ' ' + ${info.getPrenom()}" class="text-info"></h6></td>
+            </tr>
+            <tr>
+                <td><h6>- Date de naissance : </h6></td>
+                <td><h6 th:text="${info.getDateNaissance()}" class="text-info"></h6></td>
+            </tr>
+            <tr>
+                <td><h6>- Adresse : </h6></td>
+                <td><h6 th:text="${info.getAdresse()}" class="text-info"></h6></td>
+            </tr>
+            <tr>
+                <td><h6>- Téléphone : </h6></td>
+                <td><h6 th:text="${info.getTelephone()}" class="text-info"></h6></td>
+            </tr>
+            <tr>
+                <td><h6>- Profession : </h6></td>
+                <td><h6 th:text="${info.getProfession()}" class="text-info"></h6></td>
+            </tr>
+            <tr>
+                <td><h6>- Téléphone : </h6></td>
+                <td><h6 th:text="${info.getTelephone()}" class="text-info"></h6></td>
+            </tr>
+            <tr>
+                <td><h6>- Mutuelle : </h6></td>
+                <td><h6 th:text="${info.getMutuelle()}" class="text-info"></h6></td>
+            </tr>
+            <tr>
+                <td><h6>- Groupe sanguin
+                    : </h6></td>
+                <td><h6 th:text="${info.getGroupSanguin()}" class="text-info"></h6></td>
+            </tr>
+        </table>
+
+
+
+
+    </div>
+
+
+</div>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="base"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edition d'un patient</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h3 class="p-2 fw-bold">Mettre à jour patient</h3>
+    <form method="POST" action="/patients/edit" class="p-2 border-1" th:object="${patient}">
+        <input type="hidden" th:field="*{id}">
+        <div class="d-flex">
+            <div class="d-flex flex-column w-100">
+                <input type="text" th:field="*{nom}" placeholder="Nom" class="form-control"/>
+                <span th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}" class="erreur"></span>
+            </div>
+            <div class="d-flex flex-column w-100 mx-2">
+                <input type="text" th:field="*{prenom}" placeholder="Prénom" class="form-control"/>
+                <span th:if="${#fields.hasErrors('prenom')}" th:errors="*{prenom}" class="erreur"></span>
+            </div>
+            <div class="d-flex flex-column w-100">
+                <input type="text" th:field="*{cin}" placeholder="Cin" class="form-control"/>
+                <span th:if="${#fields.hasErrors('cin')}" th:errors="*{cin}" class="erreur"></span>
+            </div>
+        </div>
+
+        <div class="d-flex my-3">
+            <div class="d-flex flex-column w-100">
+                <input type="email" th:field="*{mail}" placeholder="E-mail" class="form-control"/>
+                <span th:if="${#fields.hasErrors('mail')}" th:errors="*{mail}" class="erreur"></span>
+            </div>
+            <div class="d-flex flex-column w-100 mx-2">
+                <input type="text" th:field="*{telephone}" placeholder="Téléphone" class="form-control"/>
+                <span th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}" class="erreur"></span>
+            </div>
+            <div class="d-flex flex-column w-100">
+                <input type="text" th:field="*{adresse}" placeholder="Adresse" class="form-control"/>
+                <span th:if="${#fields.hasErrors('adresse')}" th:errors="*{adresse}" class="erreur"></span>
+            </div>
+        </div>
+
+        <div class="d-flex">
+            <div class="d-flex flex-column w-100">
+                <input type="date" pattern="\d{4}-\d{2}-\d{2}" th:field="*{dateNaissance}" placeholder="Date de naissance" class="form-control" />
+                <span th:if="${#fields.hasErrors('dateNaissance')}" class="erreur">Veuillez saisir une date valide</span>
+            </div>
+            <div class="d-flex flex-column w-100 mx-2">
+                <input type="text" th:field="*{profession}" placeholder="Profession" class="form-control"/>
+                <span th:if="${#fields.hasErrors('profession')}" th:errors="*{profession}" class="erreur"></span>
+            </div>
+            <div class="d-flex flex-column w-100 me-2">
+                <select name="mutuelle" class="form-control" >
+                    <option disabled selected>-- Mutuelle --</option>
+                    <option th:each="mutuelle : ${T(ma.emsi.dentaire.enumeration.Mutuelle).values()}"
+                            th:value="${mutuelle}"
+                            th:selected="${mutuelle == patient.getMutuelle()}"
+                            th:text="${mutuelle}"></option>
+                </select>
+                <span th:if="${#fields.hasErrors('mutuelle')}" class="erreur">Veuillez séléctionner la mutuelle.</span>
+            </div>
+            <div class="d-flex flex-column w-100">
+                <select name="groupSanguin" class="form-control" >
+                    <option disabled selected>-- Groupe Sanguin --</option>
+                    <option th:each="groupSanguin : ${T(ma.emsi.dentaire.enumeration.GroupeSanguin).values()}"
+                            th:value="${groupSanguin}"
+                            th:selected="${groupSanguin == patient.getGroupSanguin()}"
+                            th:text="${groupSanguin}"></option>
+                </select>
+                <span th:if="${#fields.hasErrors('groupSanguin')}" class="erreur">Veuillez séléctionner le groupe sanguin.</span>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+            <input type="submit" value="Mettre à jour patient" class="form-control btn btn-warning fw-bold" />
+            <a th:href="@{/patients/liste}" class="form-control btn btn-outline-warning text-black fw-bold ms-4">List des patients</a>
+        </div>
+
+        <div class="p-4 d-flex justify-content-between msg-succes mt-4" th:if="${created == 'ok'}">
+            <span class="text-white">Les informations du patient sont avec succès</span>
+            <a href="#" onclick="this.parentNode.remove()" class="fw-bolder text-black text-decoration-none">&#x2715;</a>
+        </div>
+    </form>
+
+</div>
+</body>
+</html>

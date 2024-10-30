@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+            layout:decorate="base"
+      lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Modification de la consultation</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h3 class="p-2 fw-bold">Modification de la consulation</h3>
+    <form method="POST" action="/consultations/edit" class="p-2 border-1" th:object="${consultation}">
+        <div class="d-flex">
+            <input type="hidden" th:field="*{idConsultation}" />
+            <div class="d-flex flex-column w-100">
+                <select name="dossierMedical" class="form-select">
+                    <option th:value="${consultation.getDossierMedical().getId()}"
+                            th:text="${consultation.getDossierMedical().getNumeroDossier()}"></option>
+                </select>
+            </div>
+            <div class="d-flex flex-column w-100 mx-2">
+                <input type="text" th:field="*{dateConsultation}" th:value="*{dateConsultation}" class="form-control"/>
+                <span th:if="${#fields.hasErrors('dateConsultation')}" th:errors="*{dateConsultation}" class="erreur"></span>
+            </div>
+            <div class="d-flex flex-column w-100">
+                <select name="typeConsultation" class="form-select">
+                    <option disabled selected>-- Type de consultation --</option>
+                    <option th:each="type : ${T(ma.emsi.dentaire.enumeration.TypeConsultation).values()}"
+                            th:value="${type}"
+                            th:selected="${type == consultation.getTypeConsultation()}"
+                            th:text="${type}"></option>
+                </select>
+                <span th:if="${#fields.hasErrors('typeConsultation')}" th:errors="*{typeConsultation}" class="erreur"></span>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+            <input type="submit" value="Mettre à jour la consultation" class="form-control btn btn-warning fw-bold">
+            <a th:href="@{/consultations/liste}" class="form-control btn btn-outline-warning text-black fw-bold ms-4">List des consultation</a>
+        </div>
+
+        <div class="p-4 d-flex justify-content-between msg-succes mt-4" th:if="${created == 'ok'}">
+            <span class="text-white">Consultation modifié avec succès</span>
+            <a href="#" onclick="this.parentNode.remove()" class="fw-bolder text-black text-decoration-none">&#x2715;</a>
+        </div>
+    </form>
+
+</div>
+</body>
+</html>

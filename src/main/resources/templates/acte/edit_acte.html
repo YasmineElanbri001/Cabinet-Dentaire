@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+            layout:decorate="base"
+      lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h3 class="p-2 fw-bold">Modification d'un acte</h3>
+    <form method="POST" action="/actes/edit" class="p-2 border-1" th:object="${acte}">
+        <div class="d-flex">
+            <input type="hidden" th:field="*{idActe}" />
+            <div class="d-flex flex-column w-100 mx-2">
+                <input type="text" th:field="*{libelle}" placeholder="Libélle" class="form-control"/>
+                <span th:if="${#fields.hasErrors('libelle')}" th:errors="*{libelle}" class="erreur"></span>
+            </div>
+            <div class="d-flex flex-column w-100 mx-2">
+                <select name="categorie" class="form-control" >
+                    <option disabled selected>-- Catégorie --</option>
+                    <option th:each="categorie : ${T(ma.emsi.dentaire.enumeration.CategorieActe).values()}"
+                            th:value="${categorie}"
+                            th:selected="${categorie == acte.getCategorie()}"
+                            th:text="${categorie}"></option>
+                </select>
+                <span th:if="${#fields.hasErrors('libelle')}" th:errors="*{libelle}" class="erreur"></span>
+            </div>
+            <div class="d-flex flex-column w-100 mx-2">
+                <input type="text" th:field="*{prixDeBase}" placeholder="Prix de base" class="form-control"/>
+                <span th:if="${#fields.hasErrors('prixDeBase')}" th:errors="*{prixDeBase}" class="erreur"></span>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+            <input type="submit" value="Modifier l'acte" class="form-control btn btn-warning fw-bold">
+            <a th:href="@{/actes/liste}" class="form-control btn btn-outline-warning text-black fw-bold ms-4">List des actes</a>
+        </div>
+
+        <div class="p-4 d-flex justify-content-between msg-succes mt-4" th:if="${created == 'ok'}">
+            <span class="text-white">Acte Modifié avec succès</span>
+            <a href="#" onclick="this.parentNode.remove()" class="fw-bolder text-black text-decoration-none">&#x2715;</a>
+        </div>
+    </form>
+
+</div>
+</body>
+</html>

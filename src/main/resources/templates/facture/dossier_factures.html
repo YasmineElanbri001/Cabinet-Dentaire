@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+            layout:decorate="base"
+      lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Les factures d'un dossier</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="d-flex justify-content-between align-items-center p-2 border-bottom">
+        <h3 class="fw-bold" th:text="'Liste des factures : ' + ${factures.size()}"></h3>
+        <a th:href="@{/factures/ajouter}" class="btn btn-primary text-white ">Liste des situations financières <span class="bi bi-calendar text-primary"></span></a>
+    </div>
+    <table class="table table-bordered mt-2 align-middle table-hover " th:if="${factures.size()>0}">
+        <thead>
+            <tr class="text-center">
+                <th>Date de la facture</th>
+                <th>Consultation</th>
+                <th>Type de paiement</th>
+                <th>Montant total</th>
+                <th>Montant payé</th>
+                <th>Montant restant</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="facture : ${factures}" th:id="tr+${facture.getIdFacture()}">
+                <td th:text="${facture.getDateFacturation()}"></td>
+                <td th:text="${facture.getConsultation().getDossierMedical().getPatient().getCin()} + ' -- ' + ${facture.getConsultation().getDateConsultation()}"></td>
+                <td th:text="${facture.getTypePaiement()}"></td>
+                <td th:text="${facture.getMontantTotal()}"></td>
+                <td th:text="${facture.getMontantPaye()}"></td>
+                <td th:text="${facture.getMontantRestant()}">Prime</td>
+            </tr>
+        </tbody>
+    </table>
+    <div th:if="${factures.size() == 0}" class="text-center mt-4">
+        <span>Pas de facture pour cette situation financière.</span>
+    </div>
+</div>
+</body>
+</html>

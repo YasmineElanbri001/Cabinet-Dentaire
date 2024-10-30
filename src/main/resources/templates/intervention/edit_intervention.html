@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+            layout:decorate="base"
+      lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Modificationd'une intervention</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h3 class="p-2 fw-bold">Modification d'une intervention médicale</h3>
+    <form method="POST" action="/interventions/edit" class="p-2 border-1" th:object="${interventionMedical}">
+        <div class="d-flex">
+            <input type="hidden" th:field="*{idIntervention}" />
+            <div class="d-flex flex-column w-100 me-2">
+                <select name="acte" class="form-select" >
+                    <option disabled selected>-- L'acte --</option>
+                    <option th:each="acte : ${actes}"
+                            th:value="${acte.getIdActe()}"
+                            th:selected="${acte.getIdActe() == interventionMedical?.getActe()?.getIdActe()}"
+                            th:text="${acte.getLibelle()}"></option>
+                </select>
+
+            </div>
+            <div class="d-flex flex-column w-100 ms-2">
+                <select name="consultation" class="form-select" >
+                    <option disabled selected>-- Consultation --</option>
+                    <option th:each="consultation : ${consultations}"
+                            th:value="${consultation.getIdConsultation()}"
+                            th:selected="${consultation.getIdConsultation() == interventionMedical?.getConsultation()?.getIdConsultation()}"
+                            th:text="${consultation.getDossierMedical().getPatient().getCin() + ' -- ' + consultation.getDateConsultation()}"></option>
+                </select>
+
+            </div>
+        </div>
+
+        <div class="d-flex mt-4">
+            <div class="d-flex flex-column w-100 me-2">
+                <input type="text" th:field="*{dent}" placeholder="Dent" class="form-control"/>
+                <span th:if="${#fields.hasErrors('dent')}" th:errors="*{dent}" class="erreur"></span>
+            </div>
+            <div class="d-flex flex-column w-100 ms-2">
+                <input type="text" th:field="*{prixPatient}" placeholder="Prix" class="form-control"/>
+                <span th:if="${#fields.hasErrors('prixPatient')}" th:errors="*{prixPatient}" class="erreur"></span>
+            </div>
+        </div>
+
+        <div class="d-flex mt-4">
+            <div class="d-flex flex-column w-100 me-2">
+                <textarea rows=5 th:field="*{note}" placeholder="Note médecin" class="form-control">
+                </textarea>
+                <span th:if="${#fields.hasErrors('note')}" th:errors="*{note}" class="erreur"></span>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+            <input type="submit" value="Modifier l'intervention" class="form-control btn btn-warning fw-bold">
+            <a th:href="@{/interventions/liste}" class="form-control btn btn-outline-warning text-black fw-bold ms-4">List des interventions</a>
+        </div>
+
+        <div class="p-4 d-flex justify-content-between msg-succes mt-4" th:if="${created == 'ok'}">
+            <span class="text-white">Intervention modifier avec succès</span>
+            <a href="#" onclick="this.parentNode.remove()" class="fw-bolder text-black text-decoration-none">&#x2715;</a>
+        </div>
+    </form>
+
+</div>
+</body>
+</html>

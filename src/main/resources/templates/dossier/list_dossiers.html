@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+            layout:decorate="base"
+      lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des dossiers</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="d-flex justify-content-between align-items-center p-2 border-bottom">
+        <h3 class="fw-bold" th:text="'Liste des dessiers médicaux : ' + ${dossiers.size()}"></h3>
+        <a th:href="@{/dossiers/ajouter}" class="btn btn-bg text-black ">Ajouter un dossier <span class="bi bi-calendar text-primary"></span></a>
+    </div>
+    <table class="table table-bordered mt-2 align-middle table-hover " th:if="${dossiers.size()>0}">
+        <thead>
+            <tr class="text-center">
+                <th>Numéro du dossier</th>
+                <th>Date de création</th>
+                <th>Patient</th>
+                <th>Médecin traitant</th>
+                <th>état de paiement</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="dossier : ${dossiers}" th:id="tr+${dossier.getId()}">
+                <td th:text="${dossier.getNumeroDossier()}"></td>
+                <td th:text="${dossier.getDateCreation()}"></td>
+                <td th:text="${dossier.getPatient().getCin()}"></td>
+                <td th:text="${dossier.getMedcinTraitant.getNom()}"></td>
+                <td th:text="${dossier.getStatutPaiement()}"></td>
+                <td class="text-center">
+                    <a th:href="@{/dossiers/edit(id=${dossier.getId()})}" class="btn btn-warning btn-sm me-2">&nbsp;Modifier</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div th:if="${dossiers.size() == 0}" class="text-center mt-4">
+        <span>Veuillez cliquer sur le button</span>
+        <span class="fw-bold">Ajouter un dossier</span>
+        <span>afin d'ajouter des dossiers médicaux</span>
+    </div>
+</div>
+</body>
+</html>

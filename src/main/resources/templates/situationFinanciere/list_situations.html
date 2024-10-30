@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+            layout:decorate="base"
+      lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des situation financières</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="d-flex justify-content-between align-items-center p-2 border-bottom">
+        <h3 class="fw-bold" th:text="'Liste des situations financières  : ' + ${situations.size()}"></h3>
+    </div>
+    <table class="table table-bordered mt-2 align-middle table-hover " th:if="${situations.size()>0}">
+        <thead>
+            <tr class="text-center">
+                <th>Date de création</th>
+                <th>Dossier médicale</th>
+                <th>Patient</th>
+                <th>Montant globale payé</th>
+                <th>Montant globale restant</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="situation : ${situations}" class="text-center">
+                <td th:text="${situation.getDateCreation()}"></td>
+                <td th:text="${situation.getDossierMedicale().getNumeroDossier()}"></td>
+                <td th:text="${situation.getDossierMedicale().getPatient().getCin()}"></td>
+                <td th:text="${situation.getMontantGlobalePaye()} + ' DH'" class="bg-success-subtle"></td>
+                <td th:text="${situation.getMontantGlobaleRestant()} + ' DH'" class="bg-danger-subtle"></td>
+            </tr>
+        </tbody>
+    </table>
+    <div th:if="${situations.size() == 0}" class="text-center mt-4">
+        <span>Pas de situations financières</span>
+    </div>
+</div>
+</body>
+</html>

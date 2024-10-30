@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+            layout:decorate="base"
+      lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Consultations du patient</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="d-flex justify-content-between align-items-center p-2 border-bottom">
+        <h3 class="fw-bold" th:text="${consultations.size()} + ' consulation(s) pour le patient ' + ${patient.getCin()}"></h3>
+        <a th:href="@{/patients/liste}" class="btn btn-primary text-white ">Liste des patients<span class="bi bi-calendar text-primary"></span></a>
+    </div>
+    <table class="table table-bordered mt-2 align-middle table-hover " th:if="${consultations.size()>0}">
+        <thead>
+            <tr class="text-center">
+                <th>Date de consultation</th>
+                <th>Type de consultation</th>
+                <th>Numéro dossier médical</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="consultation : ${consultations}" th:id="tr+${consultation.getIdConsultation()}">
+                <td th:text="${consultation.getDateConsultation()}"></td>
+                <td th:text="${consultation.getTypeConsultation()}"></td>
+                <td th:text="${consultation.getDossierMedical().getNumeroDossier()}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div th:if="${consultations.size() == 0}" class="d-flex justify-content-center">
+        <div class="text-center mt-4 p-4 w-50 border border-1">
+            <span>Pas de consultation pour ce patient, vous voulez</span>&nbsp;&nbsp;<a th:href="@{/consultations/ajouter}" class="text-decoration-none btn btn-primary text-white">crée une ?</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

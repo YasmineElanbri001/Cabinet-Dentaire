@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+            layout:decorate="base"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajouter dentiste</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h3 class="p-2 fw-bold">Création de dentiste</h3>
+    <form method="POST" action="/dentistes/ajouter" class="p-2 border-1" th:object="${dentiste}">
+        <div class="d-flex">
+            <div class="d-flex flex-column w-100">
+                <input type="text" th:field="*{nom}" placeholder="Nom" class="form-control"/>
+                <span th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}" class="erreur"></span>
+            </div>
+            <div class="d-flex flex-column w-100 mx-2">
+                <input type="text" th:field="*{prenom}" placeholder="Prénom" class="form-control"/>
+                <span th:if="${#fields.hasErrors('prenom')}" th:errors="*{prenom}" class="erreur"></span>
+            </div>
+            <div class="d-flex flex-column w-100">
+                <input type="text" th:field="*{cin}" placeholder="Cin" class="form-control"/>
+                <span th:if="${#fields.hasErrors('cin')}" th:errors="*{cin}" class="erreur"></span>
+            </div>
+        </div>
+
+        <div class="d-flex my-3">
+            <div class="d-flex flex-column w-100">
+                <input type="email" th:field="*{mail}" placeholder="E-mail" class="form-control"/>
+                <span th:if="${#fields.hasErrors('mail')}" th:errors="*{mail}" class="erreur"></span>
+            </div>
+            <div class="d-flex flex-column w-100 mx-2">
+                <input type="text" th:field="*{telephone}" placeholder="Téléphone" class="form-control"/>
+                <span th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}" class="erreur"></span>
+            </div>
+            <div class="d-flex flex-column w-100">
+                <input type="text" th:field="*{adresse}" placeholder="Adresse" class="form-control"/>
+                <span th:if="${#fields.hasErrors('adresse')}" th:errors="*{adresse}" class="erreur"></span>
+            </div>
+        </div>
+
+        <div class="d-flex">
+            <div class="d-flex flex-column w-100">
+                <input type="text" th:field="*{nomUtilisateur}" placeholder="Nom d'utilisateur" class="form-control"/>
+                <span th:if="${#fields.hasErrors('nomUtilisateur')}" th:errors="*{nomUtilisateur}" class="erreur"></span>
+            </div>
+            <div class="d-flex flex-column w-100 mx-2">
+                <input type="password" th:field="*{motDePasse}" placeholder="Mot de passe" class="form-control"/>
+                <span th:if="${#fields.hasErrors('motDePasse')}" th:errors="*{motDePasse}" class="erreur"></span>
+            </div>
+            <div class="d-flex flex-column w-100">
+                <input type="password" th:field="*{confirmPwd}" placeholder="Confirmer le mot de passe" class="form-control"/>
+                <span th:if="${confirmer == 'non'}" class="erreur">Mots de passe non identiques.</span>
+            </div>
+        </div>
+
+        <div class="d-flex my-3">
+            <div class="d-flex flex-column w-100">
+                <select name="assurance" class="form-control" >
+                        <option disabled selected>-- Assurance --</option>
+                        <option th:each="assurance : ${T(ma.emsi.dentaire.enumeration.Assurance).values()}"
+                                th:value="${assurance}"
+                                th:selected="${assurance == dentiste.getAssurance()}"
+                                th:text="${assurance}"></option>
+                </select>
+                <span th:if="${#fields.hasErrors('assurance')}" class="erreur">Veuillez séléctionner l'assurance.</span>
+            </div>
+            <div class="d-flex flex-column w-100 mx-2">
+                <input type="text" th:field="*{salaireDeBase}" placeholder="salaire de base" class="form-control" value="sd"/>
+                <span th:if="${#fields.hasErrors('salaireDeBase')}" th:errors="*{salaireDeBase}" class="erreur"></span>
+            </div>
+            <div class="d-flex flex-column w-100">
+                <select name="specialite" class="form-control">
+                    <option disabled selected>-- Spécialité --</option>
+                    <option th:each="specialite : ${T(ma.emsi.dentaire.enumeration.Specialite).values()}"
+                            th:value="${specialite}"
+                            th:selected="${specialite == dentiste.getSpecialite()}"
+                            th:text="${specialite}"></option>
+                </select>
+                <span th:if="${#fields.hasErrors('specialite')}" class="erreur">Veuillez séléctionner la spécialité.</span>
+            </div>
+        </div>
+
+        <div class="d-flex">
+            <div class="d-flex flex-column w-100">
+                <select name="statusActuel" class="form-control">
+                    <option disabled selected>-- Status actuel --</option>
+                    <option th:each="status : ${T(ma.emsi.dentaire.enumeration.StatusEmploye).values()}"
+                            th:value="${status}"
+                            th:selected="${status == dentiste.getStatusActuel()}"
+                            th:text="${status}"></option>
+                </select>
+                <span th:if="${#fields.hasErrors('statusActuel')}" class="erreur">Veuillez séléctionner l'état actuel.</span>
+            </div>
+            <div class="d-flex flex-column w-100 ms-2">
+                <input type="date" th:field="*{dateRetourConge}" placeholder="Date de retour de du congé" class="form-control"/>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+            <input type="submit" value="Créer dentiste" class="form-control btn btn-warning fw-bold">
+            <a th:href="@{/dentistes/liste}" class="form-control btn btn-outline-warning text-black fw-bold ms-4">List des dentaires</a>
+        </div>
+
+        <div class="p-4 d-flex justify-content-between msg-succes mt-4" th:if="${created == 'ok'}">
+            <span class="text-white">Dentiste créée avec succès</span>
+            <a href="#" onclick="this.parentNode.remove()" class="fw-bolder text-black text-decoration-none">&#x2715;</a>
+        </div>
+    </form>
+
+</div>
+</body>
+</html>

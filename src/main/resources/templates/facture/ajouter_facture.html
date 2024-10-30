@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+            layout:decorate="base"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajouter une facture</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h3 class="p-2 fw-bold">Création de la facture</h3>
+    <form method="POST" action="/factures/ajouter" class="p-2 border-1" th:object="${facture}">
+        <div class="d-flex">
+            <div class="d-flex flex-column w-100">
+                <input type="date" th:field="*{dateFacturation}" placeholder="Nom" class="form-control"/>
+                <span th:if="${#fields.hasErrors('dateFacturation')}" th:errors="*{dateFacturation}" class="erreur"></span>
+            </div>
+            <div class="d-flex flex-column w-100 mx-2">
+                <select name="consultation" class="form-select" >
+                    <option disabled selected>-- Consultations --</option>
+                    <option th:each="consultation : ${consultations}"
+                            th:value="${consultation.getIdConsultation()}"
+                            th:text="${consultation.getDossierMedical().getPatient().getCin()} + ' -- ' + ${consultation.getDateConsultation()}"></option>
+                </select>
+                <span th:if="${#fields.hasErrors('consultation')}" th:errors="*{consultation}" class="erreur"></span>
+            </div>
+            <div class="d-flex flex-column w-100">
+                <select name="typePaiement" class="form-select" >
+                    <option disabled selected>-- Type de paiement --</option>
+                    <option th:each="type : ${T(ma.emsi.dentaire.enumeration.TypePaiement).values()}"
+                            th:value="${type}"
+                            th:text="${type}"></option>
+                </select>
+                <span th:if="${#fields.hasErrors('typePaiement')}" th:errors="*{typePaiement}" class="erreur"></span>
+            </div>
+        </div>
+
+        <div class="d-flex mt-4">
+            <div class="d-flex flex-column w-100">
+                <input type="text" th:field="*{montantTotal}" placeholder="Montant total" class="form-control" />
+                <span th:if="${#fields.hasErrors('montantTotal')}" class="erreur">Veuillez saisir une date valide</span>
+            </div>
+            <div class="d-flex flex-column w-100 mx-2">
+                <input type="text" th:field="*{montantPaye}" placeholder="Montant payé" class="form-control"/>
+                <span th:if="${#fields.hasErrors('montantPaye')}" th:errors="*{montantPaye}" class="erreur"></span>
+            </div>
+            <div class="d-flex flex-column w-100">
+                <input type="text" th:field="*{montantRestant}" placeholder="Montant restant" class="form-control"/>
+                <span th:if="${#fields.hasErrors('montantRestant')}" th:errors="*{montantRestant}" class="erreur"></span>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+            <input type="submit" value="Créer la facture" class="form-control btn btn-warning fw-bold" />
+            <a th:href="@{/factures/liste}" class="form-control btn btn-outline-warning text-black fw-bold ms-4">List des factures</a>
+        </div>
+
+        <div class="p-4 d-flex justify-content-between msg-succes mt-4" th:if="${created == 'ok'}">
+            <span class="text-white">Facture créée avec succès</span>
+            <a href="#" onclick="this.parentNode.remove()" class="fw-bolder text-black text-decoration-none">&#x2715;</a>
+        </div>
+    </form>
+
+</div>
+</body>
+</html>
